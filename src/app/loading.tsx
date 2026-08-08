@@ -1,0 +1,1 @@
+export default function Loading(){return <main className="shell center"><div className="luxLoader"><span/><span/><span/></div><p className="sub">Preparing Growwmore…</p></main>}

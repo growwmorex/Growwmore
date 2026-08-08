@@ -1,0 +1,1 @@
+import Link from "next/link";export default function NotFound(){return <main className="shell center"><div className="panel"><div className="eyebrow">404</div><h2>Page not found.</h2><p className="sub">Return to the Growwmore experience.</p><Link className="btn" href="/">Go home</Link></div></main>}

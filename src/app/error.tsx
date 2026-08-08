@@ -1,0 +1,2 @@
+"use client";
+export default function Error({reset}:{reset:()=>void}){return <main className="shell center"><div className="panel"><div className="eyebrow">Something interrupted</div><h2>We couldn’t complete that action.</h2><p className="sub">Your data has not been intentionally discarded. Try again.</p><button className="btn" onClick={reset}>Try again</button></div></main>}
