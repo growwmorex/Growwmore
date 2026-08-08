@@ -1,0 +1,1 @@
+export default function LuxuryBackground(){return <div className="luxuryBackground" aria-hidden="true"><video autoPlay muted loop playsInline preload="metadata"><source src="/growwmore-luxury-loop.mp4" type="video/mp4"/></video><div className="videoVeil"/><div className="ambientOrb one"/><div className="ambientOrb two"/></div>}
