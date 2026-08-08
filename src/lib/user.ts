@@ -2,6 +2,7 @@ import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firest
 import type { User } from "firebase/auth";
 import { db } from "./firebase";
 import { isAdminEmail } from "./constants";
+import { withFirestoreRetry } from "./firestoreRetry";
 
 export type Member = {
   uid:string; email:string; fullName:string; phone:string; referralCode:string;
@@ -14,16 +15,18 @@ export type Member = {
 export const memberRef = (uid:string) => doc(db,"members",uid);
 
 export async function ensureMember(user:User, fullName="", phone="", referredBy:string|null=null) {
-  const ref=memberRef(user.uid), snap=await getDoc(ref);
+  const ref=memberRef(user.uid);
+  const snap=await withFirestoreRetry(()=>getDoc(ref));
   const admin=isAdminEmail(user.email);
   if (snap.exists()) {
     const existing=snap.data() as Member;
     if(admin && existing.paymentStatus!=="approved"){
-      await updateDoc(ref,{paymentStatus:"approved",updatedAt:serverTimestamp()});
-      return {...existing,paymentStatus:"approved"};
+      await withFirestoreRetry(()=>updateDoc(ref,{paymentStatus:"approved",updatedAt:serverTimestamp()}));
+      return {...existing,paymentStatus:"approved"} as Member;
     }
     return existing;
   }
+
   const referralCode=("GM"+user.uid.replace(/[^a-zA-Z0-9]/g,"").slice(0,8)).toUpperCase();
   const member:Member={
     uid:user.uid,email:user.email||"",fullName:fullName||user.displayName||"Growwmore Member",phone,
@@ -31,10 +34,10 @@ export async function ensureMember(user:User, fullName="", phone="", referredBy:
     utr:null,commission:0,totalEarning:0,withdrawnAmount:0,photoDataUrl:user.photoURL||"",
     createdAt:serverTimestamp(),updatedAt:serverTimestamp()
   };
-  await setDoc(ref,member);
+  await withFirestoreRetry(()=>setDoc(ref,member));
   return member;
 }
 
 export async function updateMemberProfile(uid:string, values:{fullName:string;phone:string;photoDataUrl:string}){
-  await updateDoc(memberRef(uid),{...values,updatedAt:serverTimestamp()});
+  await withFirestoreRetry(()=>updateDoc(memberRef(uid),{...values,updatedAt:serverTimestamp()}));
 }
