@@ -5,24 +5,57 @@ service cloud.firestore {
     function admin(){ return signedIn() && (request.auth.token.email == "sydri63@gmail.com" || request.auth.token.email == "syedafsharkhadri63@gmail.com"); }
     function validPackage(packageId, price, commission){return (packageId=="signature-5"&&price==5000&&commission==1000)||(packageId=="heritage-8"&&price==8000&&commission==1500)||(packageId=="atelier-10"&&price==10000&&commission==2500)||(packageId=="maison-12"&&price==12000&&commission==4500)||(packageId=="imperial-15"&&price==15000&&commission==5500);}
     function validPaymentPackage(packageId, price){return (packageId=="signature-5"&&price==5000)||(packageId=="heritage-8"&&price==8000)||(packageId=="atelier-10"&&price==10000)||(packageId=="maison-12"&&price==12000)||(packageId=="imperial-15"&&price==15000);}
+
     match /members/{uid} {
       allow create: if signedIn() && request.auth.uid==uid && request.resource.data.uid==uid && request.resource.data.email==request.auth.token.email && ((admin() && request.resource.data.paymentStatus=="approved") || (!admin() && request.resource.data.paymentStatus=="not_submitted")) && request.resource.data.packageId==null && request.resource.data.packagePrice==0 && request.resource.data.commission==0 && request.resource.data.totalEarning==0 && request.resource.data.withdrawnAmount==0;
       allow read: if signedIn() && (request.auth.uid==uid || admin());
-      allow update: if admin() || (signedIn() && request.auth.uid==uid && ((resource.data.paymentStatus in ["not_submitted","rejected"] && request.resource.data.paymentStatus=="pending" && validPackage(request.resource.data.packageId,request.resource.data.packagePrice,request.resource.data.commission) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["paymentStatus","packageId","packagePrice","commission","utr","updatedAt"])) || request.resource.data.diff(resource.data).affectedKeys().hasOnly(["payoutProfile","updatedAt"]) || request.resource.data.diff(resource.data).affectedKeys().hasOnly(["fullName","phone","photoDataUrl","updatedAt"])));
+      allow update: if admin() || (
+        signedIn() && request.auth.uid==uid && (
+          (resource.data.paymentStatus in ["not_submitted","rejected"] &&
+           request.resource.data.paymentStatus=="pending" &&
+           validPackage(request.resource.data.packageId,request.resource.data.packagePrice,request.resource.data.commission) &&
+           request.resource.data.diff(resource.data).affectedKeys().hasOnly(["paymentStatus","packageId","packagePrice","commission","utr","updatedAt"]))
+          ||
+          (resource.data.paymentStatus=="pending" &&
+           request.resource.data.paymentStatus=="approved" &&
+           get(/databases/$(database)/documents/payments/$(uid)).data.status=="approved" &&
+           request.resource.data.diff(resource.data).affectedKeys().hasOnly(["paymentStatus","approvedAt","updatedAt"]))
+          ||
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(["payoutProfile","updatedAt"])
+          ||
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(["fullName","phone","photoDataUrl","updatedAt"])
+        )
+      );
       allow delete: if admin();
     }
+
+    match /memberDirectory/{email} {
+      allow read: if admin() || (signedIn() && request.auth.token.email == email);
+      allow create: if signedIn() && request.auth.token.email == email && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if admin();
+    }
+
     match /payments/{uid} {
       allow create: if signedIn() && request.auth.uid==uid && request.resource.data.uid==uid && request.resource.data.email==request.auth.token.email && request.resource.data.status=="pending" && validPaymentPackage(request.resource.data.packageId,request.resource.data.amount) && request.resource.data.utr is string && request.resource.data.utr.size()>=6 && request.resource.data.utr.size()<=100;
-      allow read: if signedIn() && (request.auth.uid==uid || admin()); allow update, delete: if admin();
+      allow read: if signedIn() && (request.auth.uid==uid || admin());
+      allow update, delete: if admin();
     }
+
     match /packageCatalog/{id} { allow read: if true; allow write: if admin(); }
+
     match /commissionTransactions/{id} {
       allow read: if signedIn() && (resource.data.referrerUid == request.auth.uid || admin());
       allow create, update, delete: if admin();
     }
+
     match /platformContent/{id} { allow read: if true; allow write: if admin(); }
 
-    match /withdrawals/{id} { allow create: if signedIn() && request.resource.data.uid==request.auth.uid && request.resource.data.email==request.auth.token.email && request.resource.data.status=="pending" && request.resource.data.amount>=500 && request.resource.data.method in ["upi","bank"]; allow read: if signedIn() && (resource.data.uid==request.auth.uid || admin()); allow update, delete: if admin(); }
+    match /withdrawals/{id} {
+      allow create: if signedIn() && request.resource.data.uid==request.auth.uid && request.resource.data.email==request.auth.token.email && request.resource.data.status=="pending" && request.resource.data.amount>=500 && request.resource.data.method in ["upi","bank"];
+      allow read: if signedIn() && (resource.data.uid==request.auth.uid || admin());
+      allow update, delete: if admin();
+    }
+
     match /{document=**} { allow read, write: if admin(); }
   }
 }

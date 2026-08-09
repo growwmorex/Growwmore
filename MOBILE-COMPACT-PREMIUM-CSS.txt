@@ -1,0 +1,80 @@
+/* APPEND TO src/app/globals.css */
+
+/* FINAL MOBILE COMPACT + ADMIN EMAIL-FIRST UI */
+.adminCompactDash{max-width:1380px;margin:0 auto}
+.adminMobileCards,.adminMemberGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.adminPaymentCard,.adminMemberCard{border:1px solid var(--line2);border-radius:24px;padding:20px;background:linear-gradient(145deg,rgba(61,27,49,.84),rgba(34,39,23,.78));box-shadow:0 18px 48px rgba(0,0,0,.2)}
+.adminIdentity span{display:block;color:var(--champagne);font-size:.56rem;letter-spacing:.17em}
+.adminIdentity strong{display:block;font:400 1.08rem Georgia,serif;margin:5px 0;overflow-wrap:anywhere}
+.adminIdentity small{display:block;color:#8e8580;font-size:.66rem;overflow-wrap:anywhere}
+.adminPaymentMeta,.adminMemberMeta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:17px 0}
+.adminPaymentMeta>div,.adminMemberMeta>div{padding:11px;border-radius:14px;background:rgba(0,0,0,.1);border:1px solid rgba(255,255,255,.06)}
+.adminPaymentMeta span,.adminMemberMeta span{display:block;color:#8f8580;font-size:.56rem;letter-spacing:.1em}
+.adminPaymentMeta b,.adminMemberMeta b{display:block;margin-top:5px;font-size:.76rem;overflow-wrap:anywhere}
+.adminApproveBtn,.adminMemberControl{width:100%;padding:10px 13px;font-size:.76rem}
+.status-approved{color:#b8e1b7}.status-pending{color:#ecd09f}.status-rejected{color:#e8a3a3}
+
+.compactCheckoutHero{padding-top:52px;padding-bottom:16px}
+.compactCheckoutHero h1{font-size:clamp(2.5rem,6vw,5rem);max-width:900px}
+.compactCheckoutGrid{gap:14px}
+.compactPremiumCard{padding:22px;border-radius:26px}
+.compactProductHero .checkoutProductMark{width:76px;height:76px;flex-basis:76px;font-size:2.55rem;border-radius:21px}
+.compactProductHero h2{font-size:1.55rem}
+.compactIncludedBox{margin:19px 0;padding:14px}
+.compactIncludedBox .checkoutIncludedItem{padding:8px 0}
+.compactQrPanel{gap:13px;padding-bottom:16px}
+.compactQrPanel .qrGlow img{width:min(205px,62vw)}
+.compactSubmit{padding:22px}
+.compactPending{padding:22px}
+
+/* Smaller package-selection cards, especially on phones */
+.productSelectionGrid{gap:14px}
+.productSelectionCard{border-radius:25px}
+.productCardVisual{min-height:130px;padding:20px}
+.productCardMonogram{width:66px;height:66px;border-radius:19px;font-size:2.25rem}
+.productCardVisual strong{font-size:1.35rem}
+.productCardBody{padding:18px}
+.productPriceRow strong{font-size:1.9rem}
+.productIncludes{margin:14px 0;padding:13px}
+.productIncludes>div{padding:6px 0;font-size:.78rem}
+.productSelectBtn{padding:10px 14px;font-size:.76rem}
+
+@media(max-width:760px){
+  .adminMobileCards,.adminMemberGrid{grid-template-columns:1fr;gap:10px}
+  .adminPaymentCard,.adminMemberCard{padding:15px;border-radius:20px}
+  .adminPaymentMeta,.adminMemberMeta{gap:6px}
+  .adminPaymentMeta>div,.adminMemberMeta>div{padding:9px}
+  .adminIdentity strong{font-size:.98rem}
+  .compactCheckoutHero{padding:38px 18px 12px}
+  .compactCheckoutHero h1{font-size:2.55rem}
+  .compactCheckoutHero p{font-size:.9rem}
+  .checkoutTrustRow{gap:6px}
+  .checkoutTrustRow span{padding:7px 9px;font-size:.61rem}
+  .premiumCheckoutGrid{padding:10px 14px}
+  .compactPremiumCard{padding:16px;border-radius:21px}
+  .compactProductHero{gap:13px}
+  .compactProductHero .checkoutProductMark{width:58px;height:58px;flex-basis:58px;font-size:1.9rem;border-radius:17px}
+  .compactProductHero h2{font-size:1.3rem}
+  .compactProductHero p{font-size:.78rem}
+  .checkoutPriceBlock{padding-top:14px}
+  .checkoutPriceBlock strong{font-size:2.25rem}
+  .paymentDetailList{gap:6px}
+  .paymentDetailList>div{padding:10px 11px}
+  .compactSubmit,.compactPending{margin:20px 14px;padding:17px}
+  .productSelectionShell{padding:14px 14px 100px}
+  .productSelectionGrid{grid-template-columns:1fr;gap:10px}
+  .productSelectionCard{border-radius:20px}
+  .productCardTop{padding:11px 14px}
+  .productCardVisual{min-height:100px;padding:14px;gap:12px}
+  .productCardMonogram{width:52px;height:52px;border-radius:15px;font-size:1.75rem}
+  .productCardVisual strong{font-size:1.15rem}
+  .productCardBody{padding:14px}
+  .productPriceRow strong{font-size:1.65rem}
+  .productPriceRow span{font-size:.62rem}
+  .productCardBody p{font-size:.78rem;line-height:1.5}
+  .productIncludes{padding:10px;margin:10px 0}
+  .productIncludes>div{font-size:.72rem;padding:5px 0}
+  .productCommission{font-size:.7rem}
+  .floatingCart{bottom:10px;padding:12px 14px;border-radius:18px;gap:10px}
+  .cartSummary strong{font-size:1.02rem}
+}
