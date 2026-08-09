@@ -1,32 +1,5 @@
 "use client";
 import Link from "next/link";
 import {useState} from "react";
-
-const MENU=[
-  ["/","Home"],
-  ["/#experience","About Growwmore"],
-  ["/#collections","Products"],
-  ["/#how","How it works"],
-  ["/support","Support"],
-  ["/login","Sign in"],
-  ["/join","Create account"]
-] as const;
-
-export default function Nav(){
- const [open,setOpen]=useState(false);
- return <>
-  <nav className="nav publicNav">
-   <Link className="brand" href="/">GROWW<span>MORE</span></Link>
-   <div className="navlinks desktopNav">
-    <Link href="/">Home</Link><Link href="/#experience">About</Link><Link href="/#collections">Products</Link><Link href="/support">Support</Link><Link href="/login">Sign in</Link><Link className="btn navCreate" href="/join">Create account</Link>
-   </div>
-   <button className="publicMenuButton" aria-label="Open main menu" aria-expanded={open} onClick={()=>setOpen(v=>!v)}><i/><i/><i/></button>
-  </nav>
-  {open&&<button className="publicMenuBackdrop" aria-label="Close menu" onClick={()=>setOpen(false)}/>} 
-  <aside className={`publicMenuDrawer ${open?"open":""}`} aria-hidden={!open}>
-   <div className="publicMenuHead"><div><small>GROWWMORE</small><strong>Main menu</strong></div><button aria-label="Close menu" onClick={()=>setOpen(false)}>×</button></div>
-   <div className="publicMenuLinks">{MENU.map(([href,label],i)=><Link key={href+label} href={href} onClick={()=>setOpen(false)}><span>0{i+1}</span><b>{label}</b></Link>)}</div>
-   <div className="publicMenuNote">Luxury handmade products · artist-led marketplace · product-based referral opportunity.</div>
-  </aside>
- </>;
-}
+const MENU=[["/","Home"],["/#experience","About Growwmore"],["/products","Products"],["/#how","How it works"],["/support","Support"],["/login","Sign in"],["/join","Create account"]] as const;
+export default function Nav(){const [open,setOpen]=useState(false);return <><nav className="nav publicNav"><Link className="brand" href="/">GROWW<span>MORE</span></Link><div className="navlinks desktopNav"><Link href="/">Home</Link><Link href="/#experience">About</Link><Link href="/products">Products</Link><Link href="/support">Support</Link><Link href="/login">Sign in</Link><Link className="btn navCreate" href="/join">Create account</Link></div><button className="publicMenuButton" aria-label="Open main menu" aria-expanded={open} onClick={()=>setOpen(v=>!v)}><i/><i/><i/></button></nav>{open&&<button className="publicMenuBackdrop" aria-label="Close menu" onClick={()=>setOpen(false)}/>}<aside className={`publicMenuDrawer ${open?"open":""}`} aria-hidden={!open}><div className="publicMenuHead"><div><small>GROWWMORE</small><strong>Main menu</strong></div><button aria-label="Close menu" onClick={()=>setOpen(false)}>×</button></div><div className="publicMenuLinks">{MENU.map(([href,label],i)=><Link key={href+label} href={href} onClick={()=>setOpen(false)}><span>0{i+1}</span><b>{label}</b></Link>)}</div><div className="publicMenuNote">Luxury handmade products · artist-led marketplace · product-based referral opportunity.</div></aside></>}

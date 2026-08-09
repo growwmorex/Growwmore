@@ -1,0 +1,1 @@
+Remove the homepage `<section className="section packageGallery" id="collections">...<BundleCards selectable={false}/></section>` block and remove the `BundleCards` import from `src/app/page.tsx`. The homepage should explain Growwmore only; product selection now lives at `/products`.

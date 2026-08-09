@@ -1,0 +1,1 @@
+Upgrade `/payment` to a shopping-style checkout: selected collection summary, included items, total payable, QR, UPI ID, support phone `9743254743`, support email `growwmorex1@gmail.com`, transaction UTR form, and pending-verification state. Keep existing Firestore submit logic and exact package IDs/prices.
